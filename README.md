@@ -2,6 +2,8 @@
 
 ## next.js typescript
 
+---
+
 > npx create-next-app <> --typescript
 
 ---
