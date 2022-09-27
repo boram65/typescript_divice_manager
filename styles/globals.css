@@ -3,5 +3,13 @@
 @tailwind utilities;
 
 .btn {
-  @apply bg-red-200 py-4 px-5 rounded-2xl text-lg dark:bg-green-700 dark:text-white;
+  @apply bg-gradient-to-tr bg-yellow-200 from-green-500  dark:bg-red-400 dark:from-indigo-500 text-white py-4 px-5 rounded-2xl text-lg;
+}
+
+.device_itme {
+  @apply bg-gradient-to-t dark:bg-gradient-to-tl bg-fuchsia-400 from-teal-400 dark:bg-red-300 dark:from-indigo-500  border-0 rounded-2xl dark:shadow-xl  w-60 h-52 p-4 flex flex-col justify-between m-5;
+}
+
+.pro_bg {
+  @apply border-2 border-gray-300 h-[100vh] w-[640px] flex flex-col justify-between bg-gradient-to-b dark:bg-cyan-800 dark:from-gray-800 dark:text-white bg-green-200 from-sky-300 text-gray-600;
 }

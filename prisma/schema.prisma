@@ -27,3 +27,13 @@ model post {
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
 }
+
+model test_device {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  probuct  String
+  location String
+  unit     String
+  memo     String?
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+}

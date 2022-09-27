@@ -5,14 +5,16 @@ import Layout from "../components/Layout";
 
 const Setting: NextPage = () => {
   const [location, setLocation] = useState("");
-  const [crobuct, setCrobuct] = useState("");
+  const [probuct, setProbuct] = useState("");
   const [unit, setUnit] = useState("");
+  const [memo, setMemo] = useState("");
 
   const 장비추가버튼 = () => {
     document.querySelector("#container_add_device")?.classList.toggle("hidden");
     setLocation("");
-    setCrobuct("");
+    setProbuct("");
     setUnit("");
+    setMemo("");
   };
   return (
     <Layout title={"SETTING"}>
@@ -34,8 +36,8 @@ const Setting: NextPage = () => {
             <input
               type={"text"}
               className="h-10 ring-2 ring-gray-600 dark:ring-white dark:text-black"
-              value={crobuct}
-              onChange={event => setCrobuct(event.currentTarget.value)}
+              value={probuct}
+              onChange={event => setProbuct(event.currentTarget.value)}
               placeholder="제품명..."
             ></input>
 
@@ -56,7 +58,18 @@ const Setting: NextPage = () => {
               onChange={event => setUnit(event.currentTarget.value)}
               placeholder="°C , °F ..."
             ></input>
-            <button>등록</button>
+
+            <span className="mt-5">memo </span>
+            <input
+              type={"text"}
+              className="h-10 ring-2 ring-gray-600 dark:ring-white dark:text-black"
+              value={memo}
+              onChange={event => setUnit(event.currentTarget.value)}
+              placeholder="text..."
+            ></input>
+            <button className="bg-gradient-to-tr bg-yellow-200 from-green-500  dark:bg-red-400 dark:from-indigo-500 my-8  h-16">
+              등록
+            </button>
             <hr />
           </div>
         </div>
