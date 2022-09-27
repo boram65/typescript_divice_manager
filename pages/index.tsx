@@ -3,15 +3,48 @@ import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/Home.module.css";
 import Counter from "../components/Counter";
-import { useEffect, useState } from "react";
+import { useEffect, useReducer, useState } from "react";
 import { User } from "@prisma/client";
+import Router, { useRouter } from "next/router";
+import { json } from "stream/consumers";
 
 const Home: NextPage = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const router = useRouter();
+  const [rename, setRename] = useState("");
 
   const 사용자함수 = () => {
-    console.log("사용자함수 호춣");
-    fetch("/api/alluser");
+    console.log("사용자함수 호출");
+    fetch("/api/adduser")
+      .then(res => res.json())
+      .then(json => {
+        setUsers([...users, json.user]);
+        //users.push(json.user);
+      });
+  };
+
+  const 사용자삭제 = (targetId: String) => {
+    console.log(targetId);
+
+    fetch(`/api/user/delete/${targetId}`)
+      .then(res => res.json())
+      .then(json => {
+        const filterUser = users.filter(user => user.id !== json.deletedId);
+        setUsers(filterUser);
+        console.log("여기서 삭제");
+        console.log(json.deletedId);
+      });
+  };
+  const 이름변경 = (targetId: String) => {
+    //console.log(`${targetId} 를 ${rename}으로 변경`);
+    if (!rename) rename;
+
+    const data = { name: rename };
+
+    fetch(`/api/user/update/${targetId}`, {
+      method: "POST",
+      body: JSON.stringify(data),
+    });
   };
 
   useEffect(() => {
@@ -37,6 +70,27 @@ const Home: NextPage = () => {
             <div className="flex">({user.age}세)</div>
             <div>{user.addres}</div>
             <div>{user.createAt.toString()}</div>
+            <div>
+              <input
+                type={"text"}
+                className="border"
+                value={rename}
+                onChange={e => setRename(e.currentTarget.value)}
+              ></input>
+              <button
+                className="bg-blue-200 px-1 rounded"
+                onClick={() => 이름변경(user.id)}
+              >
+                수정
+              </button>
+
+              <button
+                className="bg-red-300"
+                onClick={() => 사용자삭제(user.id)}
+              >
+                삭제
+              </button>
+            </div>
           </div>
         ))}
       </div>

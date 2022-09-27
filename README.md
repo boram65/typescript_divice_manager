@@ -110,3 +110,5 @@ Next steps:
 
 js에서 CRUD 가능
 프리즈마 CRUD = {https://www.prisma.io/docs/concepts/components/prisma-client/crud}
+
+//@ts-ignore =아래 한줄 타입스크립트 우회(급할때만)
