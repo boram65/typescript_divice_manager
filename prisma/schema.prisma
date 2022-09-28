@@ -28,12 +28,32 @@ model post {
   updateAt DateTime @updatedAt
 }
 
-model test_device {
-  id       String   @id @default(auto()) @map("_id") @db.ObjectId
-  probuct  String
-  location String
+enum DeviceType {
+  TEMP
+  HUMI
+  CO2
+}
+
+model Device {
+  id String @id @default(auto()) @map("_id") @db.ObjectId
+
+  product  String
+  location String     @default("거실")
+  type     DeviceType
   unit     String
   memo     String?
+
   createAt DateTime @default(now())
   updateAt DateTime @updatedAt
+
+  Sencing Sencing[]
+}
+
+model Sencing {
+  id       String   @id @default(auto()) @map("_id") @db.ObjectId
+  createAt DateTime @default(now())
+  updateAt DateTime @updatedAt
+  value    Float
+  Device   Device?  @relation(fields: [deviceId], references: [id])
+  deviceId String?  @db.ObjectId
 }
