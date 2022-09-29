@@ -7,18 +7,15 @@ interface DeviceCardProps {
   realTime: boolean;
 }
 
-export default function deviceCard({ device, realTime }: DeviceCardProps) {
+export default function DeviceCard({ device, realTime }: DeviceCardProps) {
   const [value, setValue] = useState(0);
   const [timerID, setTimerID] = useState<NodeJS.Timer>();
-  const [bbong, setBboong] = useState("");
 
   const dataUpdate = () => {
     fetch(`api/senscing/${device.id}`)
       .then(res => res.json())
       .then(json => {
-        console.log(device.id);
         setValue(json.value);
-        setBboong("text-red-300");
       });
   };
 

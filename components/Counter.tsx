@@ -7,17 +7,23 @@ interface CounterProps {
   subtitle?: String;
 }
 
-export default function count(props: CounterProps) {
+export default function Count(props: CounterProps) {
   const [count, setCount] = useState(0);
 
   return (
     <div className="">
       <div>{props.title.toString()}</div>
       <h2>카운터 : {count}</h2>
-      <button className="bg-green-400" onClick={() => setCount(count + 1)}>
+      <button
+        className="bg-green-400"
+        onClick={() => setCount(count => count + 1)}
+      >
         +1
       </button>
-      <button className="bg-green-400 ml-2" onClick={() => setCount(count - 1)}>
+      <button
+        className="bg-green-400 ml-2"
+        onClick={() => setCount(count => count - 1)}
+      >
         -1
       </button>
     </div>

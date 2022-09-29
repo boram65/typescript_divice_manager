@@ -10,7 +10,7 @@ interface LayoutProps {
   children: React.ReactNode;
 }
 
-export default function layout(props: LayoutProps) {
+export default function Layout(props: LayoutProps) {
   const router = useRouter();
   // console.log(router);
 
