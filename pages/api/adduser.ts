@@ -21,5 +21,8 @@ export default async function handler(
     res.status(200).json({ OK: true, user: newUser });
   } catch (err) {
     res.status(200).json({ OK: false });
+  } finally {
+    //예외가 있든 없든 실행되는 부분
+    await client.$disconnect();
   }
 }

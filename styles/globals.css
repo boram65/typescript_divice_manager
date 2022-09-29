@@ -2,6 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "react-toggle/style.css";
+
 .btn {
   @apply bg-gradient-to-tr bg-yellow-200 from-green-500  dark:bg-red-400 dark:from-indigo-500 text-white py-4 px-5 rounded-2xl text-lg;
 }

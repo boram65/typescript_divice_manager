@@ -16,5 +16,9 @@ export default async function handler(
     const users = await client.user.findMany();
     console.log(users);
     res.status(200).json({ name: "okokok", users });
-  } catch (err) {}
+  } catch (err) {
+  } finally {
+    //예외가 있든 없든 실행되는 부분
+    await client.$disconnect();
+  }
 }

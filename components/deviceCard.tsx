@@ -4,18 +4,40 @@ import { json } from "stream/consumers";
 
 interface DeviceCardProps {
   device: Device;
+  realTime: boolean;
 }
 
-export default function deviceCard({ device }: DeviceCardProps) {
+export default function deviceCard({ device, realTime }: DeviceCardProps) {
   const [value, setValue] = useState(0);
+  const [timerID, setTimerID] = useState<NodeJS.Timer>();
+  const [bbong, setBboong] = useState("");
 
-  useEffect(() => {
+  const dataUpdate = () => {
     fetch(`api/senscing/${device.id}`)
       .then(res => res.json())
       .then(json => {
         console.log(device.id);
         setValue(json.value);
+        setBboong("text-red-300");
       });
+  };
+
+  useEffect(() => {
+    console.log(`${device.id} - ${realTime}`);
+
+    if (realTime) {
+      const temptimerID = setInterval(() => {
+        dataUpdate();
+        console.log("ㅎㅎ실시간임");
+      }, 5000);
+      setTimerID(temptimerID);
+    } else {
+      clearInterval(timerID);
+    }
+  }, [realTime]);
+
+  useEffect(() => {
+    dataUpdate();
   }, []);
 
   return (
