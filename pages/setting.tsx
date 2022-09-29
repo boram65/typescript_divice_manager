@@ -1,11 +1,13 @@
 import { Device } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useReducer, useState } from "react";
 import { json } from "stream/consumers";
 import Layout from "../components/Layout";
 
 const Setting: NextPage = () => {
+  const router = useRouter();
   const [product, setProduct] = useState(""); //품명
   const [location, setLocation] = useState(""); //설치위치
   const [type, setType] = useState(""); //측정단위
@@ -25,6 +27,9 @@ const Setting: NextPage = () => {
   //셀랙터 변경 함수
   const 장치종류변경 = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setType(event.currentTarget.value);
+    if (type === "TEMP") setUnit("°C");
+    if (type === "HUMI") setUnit("%");
+    if (type === "CO2") setUnit("PPM");
   };
 
   const 장비등록 = () => {
@@ -55,7 +60,17 @@ const Setting: NextPage = () => {
       body: JSON.stringify(data),
     })
       .then(res => res.json())
-      .then(json => console.log(json));
+      .then(json => {
+        if (json.OK) {
+          //router.reload();
+          장비추가버튼();
+
+          const tempArr = [...allDeviceData, json.newDevice];
+          setAllDeviceData(tempArr);
+        } else {
+          setErrMsg("등록실패함");
+        }
+      });
 
     //전송시 입력창 초기화
 
@@ -70,9 +85,15 @@ const Setting: NextPage = () => {
 
   const 디바이스삭제 = (id: String) => {
     if (!id) return;
-    fetch(`api/device/delete/${id}`, { method: "DELETE" })
-      .then(res => res.json)
-      .then(json => console.log(json));
+    fetch(`api/device/${id}`, { method: "DELETE" })
+      .then(res => res.json())
+      .then(json => {
+        if (json.OK === true) {
+          //페이지 새로고침(라우터 사용해야함)
+          router.reload();
+          //console.log(json.id);
+        }
+      });
   };
 
   return (
@@ -124,7 +145,7 @@ const Setting: NextPage = () => {
               className="h-10 ring-2 ring-gray-600 dark:ring-white dark:text-black"
               value={unit}
               onChange={event => setUnit(event.currentTarget.value)}
-              placeholder="°C , °F ..."
+              placeholder="°C , °F , % ..."
             ></input>
 
             <span className="mt-5">memo </span>
@@ -154,14 +175,18 @@ const Setting: NextPage = () => {
         <div data-comment={"장비삭제"}>
           <div>
             {allDeviceData.map((device, idx) => (
-              <div key={idx} className="border-b-2 mb-4 flex justify-between">
-                <div className="">
-                  <div>{device.id}</div>
-                  <div>{`${device.type} ${device.product} (${device.location})`}</div>
-                  <div>{device.memo}</div>
+              <div
+                key={idx}
+                className="mb-4 flex justify-between items-center bg-gradient-to-tr bg-white from-red-300 dark:bg-sky-600 dark:from-gray-600 py-1 rounded-2xl"
+              >
+                <div className=" ml-4">
+                  <div className="text-xs">{device.id}</div>
+                  <div className="text-lg">{`${device.type} ${device.product} (${device.location})`}</div>
+                  <div className="text-gray-400">{device.memo}</div>
                 </div>
                 <button
-                  className="text-red-500 bg-red-200 w-12 h-12"
+                  className="mr-2 bg-gradient-to-tr bg-yellow-200 from-green-500  dark:bg-red-400 dark:from-indigo-500 text-white h-10 w-10 rounded-2xl text-lg;
+"
                   onClick={() => 디바이스삭제(device.id)}
                 >
                   삭제

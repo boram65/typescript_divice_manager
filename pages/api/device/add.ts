@@ -48,7 +48,7 @@ export default async function handler(
       },
     });
 
-    res.status(200).json({ OK: true, err: "성공성공성공" });
+    res.status(200).json({ OK: true, newDevice });
   } catch (err) {
     res.status(200).json({ OK: false, err: `${err}` });
   }

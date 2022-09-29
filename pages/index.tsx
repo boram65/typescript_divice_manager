@@ -1,8 +1,20 @@
+import { Device } from "@prisma/client";
 import type { NextPage } from "next";
 import Link from "next/link";
+import { useEffect, useState } from "react";
+import { json } from "stream/consumers";
 import Layout from "../components/Layout";
+import DeviceCard from "../components/deviceCard";
+import Toggle from 'react-toggle'
 
 const Home: NextPage = () => {
+  const [devices, setDevices] = useState<Device[]>([]);
+  useEffect(() => {
+    fetch("api/device/all")
+      .then(res => res.json())
+      .then(json => setDevices(json.allDevice));
+  });
+
   return (
     <Layout title={"HOME"}>
       <div className="h-full overflow-y-scroll p-6 space-y-7">
@@ -17,22 +29,11 @@ const Home: NextPage = () => {
         </div>
         <div id="링크드투유" className="flex justify-between items-center">
           <div className="text-2xl">Linked to you</div>
-          <div>[실시간 버튼 자리]</div>
+          <div><Toggle></Toggle></div>
         </div>
         <div id="센서목록" className="flex flex-wrap justify-center">
-          {[1, 1, 1, 1, 1].map((device, idx) => (
-            <div key={idx} className="device_itme">
-              <div className="flex justify-end items-end">
-                <span className="text-5xl text-gray-50">25</span>
-                <span className="text-2xs text-gray-50">%</span>
-              </div>
-              <div className=" flex flex-col">
-                <span className="text-xs text-gray-200">
-                  색칠공부 하는중입니다.
-                </span>
-                <span className="text-3xl text-gray-50">여기는 품명</span>
-              </div>
-            </div>
+          {devices.map((device, idx) => (
+            <DeviceCard key={idx} device={device} />
           ))}
         </div>
       </div>
